@@ -1,4 +1,6 @@
 /* App.css */
+
+/* Reset default styles for the entire page */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -8,12 +10,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Set the font for code elements */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Add the main background style for the entire app */
+/* Apply a linear gradient background to the body */
 body {
   background-image: linear-gradient(to bottom right, #8B5CF6, #9F7AEA);
   min-height: 100vh;
@@ -22,7 +24,7 @@ body {
   align-items: center;
 }
 
-/* Add the container style for the app content */
+/* Apply styling to the main container for the app content */
 .App-container {
   max-width: 600px;
   padding: 20px;
@@ -30,7 +32,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Add the table styles */
+/* Set default styles for tables */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -42,11 +44,12 @@ table td {
   border: 1px solid #ddd;
 }
 
+/* Highlight selected cells with a different background color */
 table td.selected {
   background-color: #FCD34D;
 }
 
-/* Add styles for textareas and button */
+/* Set styles for textareas and buttons */
 textarea,
 button {
   width: 100%;
@@ -58,6 +61,12 @@ button {
   outline: none;
 }
 
+/* Set the font size of the text in textareas to half the default size */
+textarea {
+  font-size: 0.85em;
+}
+
+/* Style the buttons with a background color and change color on hover */
 button {
   background-color: #8B5CF6;
   color: #fff;
@@ -68,6 +77,7 @@ button:hover {
   background-color: #9F7AEA;
 }
 
+/* Add styles for the sloth icon */
 .sloth-icon {
   width: 40px; /* Set the desired width 1.70 times bigger */
   height: 40px; /* Set the desired height 1.70 times bigger */
@@ -82,8 +92,23 @@ button:hover {
   margin-bottom: 20px;
 }
 
+/* Set the font size of the title to half the default size */
 .title {
-  font-size: 1.70em; /* Set the desired font size 1.70 times bigger */
+  font-size: 3.4em; /* Set the desired font size 1.70 times bigger */
   color: #8B5CF6; /* Set the same color as the background */
   margin: 0;
+}
+
+/* Add styles for the display of selected cells */
+.selected-cells {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.selected-cell {
+  padding: 6px;
+  margin: 2px;
+  background-color: #FCD34D;
+  border-radius: 5px;
 }

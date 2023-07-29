@@ -1,11 +1,15 @@
+// Import necessary modules and styles
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom'; // Use ReactDOM instead of ReactDOM from 'react-dom/client'
+import './index.css'; // Import custom CSS styles
 import './tailwind.css'; // Import the Tailwind CSS file
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App from './App'; // Import the main App component
+import reportWebVitals from './reportWebVitals'; // Import the reportWebVitals function
 
+// Create a root for ReactDOM
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Render the App component within React.StrictMode
 root.render(
   <React.StrictMode>
     <App />

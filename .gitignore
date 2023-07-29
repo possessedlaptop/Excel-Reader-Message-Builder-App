@@ -37,3 +37,6 @@ yarn-error.log*
 # Dependency lock files
 package-lock.json
 yarn.lock
+
+# Custom ignore for specific files
+/src/data/excelData.xlsx
