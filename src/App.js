@@ -66,13 +66,13 @@ const App = () => {
   };
 
   // Function to remove a column from the table
-  const handleRemoveColumn = (columnIndex) => {
+  /* const handleRemoveColumn = (columnIndex) => {
     if (!selectedCells.some((selectedCell) => selectedCell.column === columnIndex)) {
       setExcelData((prevData) => prevData.map((row) => row.filter((_, index) => index !== columnIndex)));
     } else {
       alert("Cannot delete a column with selected cells. Clear the selection first.");
     }
-  };
+  }; */
 
   // Function to remove a row from the table
   const handleRemoveRow = (rowIndex) => {
