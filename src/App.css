@@ -1,29 +1,69 @@
 /* App.css */
-.App {
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Add the main background style for the entire app */
+body {
+  background-image: linear-gradient(to bottom right, #8B5CF6, #9F7AEA);
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+/* Add the container style for the app content */
+.App-container {
+  max-width: 600px;
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Add the table styles */
 table {
+  width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
-td {
-  border: 1px solid #ccc;
+table td {
   padding: 8px;
+  border: 1px solid #ddd;
+}
+
+table td.selected {
+  background-color: #FCD34D;
+}
+
+/* Add styles for textareas and button */
+textarea,
+button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+button {
+  background-color: #8B5CF6;
+  color: #fff;
   cursor: pointer;
 }
 
-td.selected {
-  background-color: #ffc;
-}
-
-textarea {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 10px;
+button:hover {
+  background-color: #9F7AEA;
 }

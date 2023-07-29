@@ -24,8 +24,17 @@ const ExcelUploader = ({ onDataLoaded }) => {
   };
 
   return (
-    <div>
-      <input type="file" accept=".xlsx" onChange={handleFileChange} />
+    <div className="p-4 rounded-lg shadow-md bg-gradient-to-br from-indigo-500 to-purple-600">
+      <label htmlFor="fileInput" className="block mb-2 font-medium text-white">
+        Upload Excel File (.xlsx):
+      </label>
+      <input
+        type="file"
+        id="fileInput"
+        accept=".xlsx"
+        className="w-full px-4 py-2 text-sm text-white bg-transparent border-2 border-white rounded-md focus:outline-none focus:ring focus:ring-white"
+        onChange={handleFileChange}
+      />
     </div>
   );
 };
