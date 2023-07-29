@@ -1,25 +1,68 @@
-import logo from './logo.svg';
+// App.js
+import React, { useState } from 'react';
+import ExcelUploader from './ExcelUploader';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [excelData, setExcelData] = useState([]);
+  const [selectedCells, setSelectedCells] = useState([]);
+  const [message, setMessage] = useState('');
+  const [outputMessage, setOutputMessage] = useState('');
+
+  const handleDataLoaded = (data) => {
+    setExcelData(data);
+  };
+
+  const handleCellSelect = (rowIndex, columnIndex) => {
+    setSelectedCells([...selectedCells, excelData[rowIndex][columnIndex]]);
+  };
+
+  const handleGenerateOutput = () => {
+    let output = message;
+    selectedCells.forEach((data) => {
+      output = output.replace('?', data);
+    });
+    setOutputMessage(output);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ExcelUploader onDataLoaded={handleDataLoaded} />
+      <div>
+        {/* Display the Excel data as a table */}
+        <table>
+          <tbody>
+            {excelData.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {row.map((cell, columnIndex) => (
+                  <td
+                    key={columnIndex}
+                    onClick={() => handleCellSelect(rowIndex, columnIndex)}
+                    className={selectedCells.includes(cell) ? 'selected' : ''}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Input message textarea */}
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Enter your message here..."
+        ></textarea>
+
+        {/* Button to generate the output */}
+        <button onClick={handleGenerateOutput}>Generate Output</button>
+
+        {/* Output message textarea */}
+        <textarea value={outputMessage} readOnly></textarea>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
