@@ -49,6 +49,39 @@ const App = () => {
     setSelectedCells([]); // Clear the selected cell values from the state
   };
 
+  // Function to handle variable drag
+  const handleVariableDrag = (event, rowIndex, columnIndex) => {
+    event.dataTransfer.setData('text/plain', JSON.stringify({ row: rowIndex, column: columnIndex }));
+  };
+
+  // Function to handle variable drop
+  const handleVariableDrop = (event) => {
+    event.preventDefault();
+    const data = JSON.parse(event.dataTransfer.getData('text/plain'));
+    const { row, column } = data;
+
+    if (selectedCells.some((cell) => cell.row === row && cell.column === column)) {
+      return; // Don't do anything if the cell is already in the selectedCells
+    }
+
+    setSelectedCells([...selectedCells, { row, column }]);
+  };
+
+  // Function to handle variable deselection
+  const handleVariableDeselect = (rowIndex, columnIndex) => {
+    setSelectedCells(selectedCells.filter((cell) => cell.row !== rowIndex || cell.column !== columnIndex));
+  };
+
+  // Function to remove a column from the table
+  const handleRemoveColumn = (columnIndex) => {
+    setExcelData((prevData) => prevData.map((row) => row.filter((cell, index) => index !== columnIndex)));
+  };
+
+  // Function to remove a row from the table
+  const handleRemoveRow = (rowIndex) => {
+    setExcelData((prevData) => prevData.filter((row, index) => index !== rowIndex));
+  };
+
   return (
     <div className="App">
       <div className="container">
@@ -71,26 +104,49 @@ const App = () => {
         {/* Display the Excel data as a table */}
         <table>
           <tbody>
-          {excelData.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((cell, columnIndex) => (
-                <td
-                  key={columnIndex}
-                  onClick={() => handleCellSelect(rowIndex, columnIndex)}
-                  className={selectedCells.some(
-                    (selectedCell) =>
-                      selectedCell.row === rowIndex &&
-                      selectedCell.column === columnIndex
-                  )
-                    ? 'selected'
-                    : ''}
-                >
-                  {cell}
+            {excelData.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {row.map((cell, columnIndex) => (
+                  <td
+                    key={columnIndex}
+                    onClick={() => handleCellSelect(rowIndex, columnIndex)}
+                    className={selectedCells.some(
+                      (selectedCell) =>
+                        selectedCell.row === rowIndex && selectedCell.column === columnIndex
+                    )
+                      ? 'selected'
+                      : ''}
+                    draggable // Enable dragging
+                    onDragStart={(e) => handleVariableDrag(e, rowIndex, columnIndex)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={handleVariableDrop}
+                  >
+                    {cell}
+                    {selectedCells.some(
+                      (selectedCell) =>
+                        selectedCell.row === rowIndex && selectedCell.column === columnIndex
+                    ) && (
+                      <button onClick={() => handleVariableDeselect(rowIndex, columnIndex)}>
+                        X
+                      </button>
+                    )}
+                  </td>
+                ))}
+                {/* Button to remove the entire column */}
+                <td>
+                  <button onClick={() => handleRemoveColumn(rowIndex)}>Remove Column</button>
                 </td>
+              </tr>
+            ))}
+            {/* Button to remove the entire row */}
+            <tr>
+              <td>
+                <button onClick={() => handleRemoveRow(excelData.length - 1)}>Remove Row</button>
+              </td>
+              {excelData[0]?.map((_, columnIndex) => (
+                <td key={columnIndex}></td>
               ))}
             </tr>
-          ))}
-
           </tbody>
         </table>
 
