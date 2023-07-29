@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ExcelUploader from './ExcelUploader';
 import './App.css';
+import SlothIcon from './Sloth-icon.png'; // Import the Sloth-icon.png image from the src folder
 
 const App = () => {
   // State variables
@@ -9,6 +10,9 @@ const App = () => {
   const [selectedCells, setSelectedCells] = useState([]); // Holds the selected cell values
   const [message, setMessage] = useState(''); // Holds the user input message
   const [outputMessage, setOutputMessage] = useState(''); // Holds the output message with replaced values
+
+  // State variable for toast message
+  const [toastMessage, setToastMessage] = useState('');
 
   // Function to handle data loaded from Excel file
   const handleDataLoaded = (data) => {
@@ -20,15 +24,26 @@ const App = () => {
     const isCellSelected = selectedCells.some(
       (cell) => cell.row === rowIndex && cell.column === columnIndex
     );
-  
+
     if (isCellSelected) {
       setSelectedCells(selectedCells.filter((cell) => !(cell.row === rowIndex && cell.column === columnIndex)));
     } else {
       setSelectedCells([...selectedCells, { row: rowIndex, column: columnIndex }]);
     }
   };
-  
-  
+
+  // Function to handle the reordering of selected cells
+  const handleReorderCells = (startIndex, endIndex) => {
+    if (startIndex === endIndex) {
+      return;
+    }
+
+    const reorderedCells = Array.from(selectedCells);
+    const [removedCell] = reorderedCells.splice(startIndex, 1);
+    reorderedCells.splice(endIndex, 0, removedCell);
+
+    setSelectedCells(reorderedCells);
+  };
 
   // Function to generate the output message
   const handleGenerateOutput = () => {
@@ -43,43 +58,41 @@ const App = () => {
     setOutputMessage(output); // Update the state with the output message
   };
 
-
   // Function to clear the selected cells
   const handleClearSelection = () => {
     setSelectedCells([]); // Clear the selected cell values from the state
   };
 
-  // Function to handle variable drag
-  const handleVariableDrag = (event, rowIndex, columnIndex) => {
-    event.dataTransfer.setData('text/plain', JSON.stringify({ row: rowIndex, column: columnIndex }));
-  };
-
-  // Function to handle variable drop
-  const handleVariableDrop = (event) => {
-    event.preventDefault();
-    const data = JSON.parse(event.dataTransfer.getData('text/plain'));
-    const { row, column } = data;
-
-    if (selectedCells.some((cell) => cell.row === row && cell.column === column)) {
-      return; // Don't do anything if the cell is already in the selectedCells
-    }
-
-    setSelectedCells([...selectedCells, { row, column }]);
-  };
-
-  // Function to handle variable deselection
-  const handleVariableDeselect = (rowIndex, columnIndex) => {
-    setSelectedCells(selectedCells.filter((cell) => cell.row !== rowIndex || cell.column !== columnIndex));
+  // Function to remove a variable from the preview list
+  const handleRemoveVariable = (index) => {
+    const updatedSelectedCells = [...selectedCells];
+    updatedSelectedCells.splice(index, 1);
+    setSelectedCells(updatedSelectedCells);
   };
 
   // Function to remove a column from the table
   const handleRemoveColumn = (columnIndex) => {
+    if (selectedCells.some((cell) => cell.column === columnIndex)) {
+      setToastMessage('Cannot delete a column with selected cells.');
+      return;
+    }
+
     setExcelData((prevData) => prevData.map((row) => row.filter((cell, index) => index !== columnIndex)));
   };
 
   // Function to remove a row from the table
   const handleRemoveRow = (rowIndex) => {
+    if (selectedCells.some((cell) => cell.row === rowIndex)) {
+      setToastMessage('Cannot delete a row with selected cells.');
+      return;
+    }
+
     setExcelData((prevData) => prevData.filter((row, index) => index !== rowIndex));
+  };
+
+  // Function to handle the close of the toast message
+  const handleCloseToast = () => {
+    setToastMessage('');
   };
 
   return (
@@ -88,11 +101,8 @@ const App = () => {
         {/* Title with sloth icon */}
         <div className="title-container">
           {/* Your sloth icon */}
-          <div className="sloth-icon">
-            <img
-              src="https://w7.pngwing.com/pngs/745/972/png-transparent-sleeping-sloth-sleep-rest-animal-relax-lazy-cute-nap-nature.png"
-              alt="Sloth Icon"
-            />
+          <div className="sloth-icon-container">
+            <img src={SlothIcon} alt="Sloth Icon" /> {/* Use the imported Sloth-icon.png */}
           </div>
           {/* Title */}
           <h1 className="title">Sloth Lazy Mail Builder</h1>
@@ -106,6 +116,12 @@ const App = () => {
           <tbody>
             {excelData.map((row, rowIndex) => (
               <tr key={rowIndex}>
+                {/* Button to remove the entire row */}
+                <td>
+                  <button className="remove-row-button" onClick={() => handleRemoveRow(rowIndex)}>
+                    X
+                  </button>
+                </td>
                 {row.map((cell, columnIndex) => (
                   <td
                     key={columnIndex}
@@ -117,34 +133,41 @@ const App = () => {
                       ? 'selected'
                       : ''}
                     draggable // Enable dragging
-                    onDragStart={(e) => handleVariableDrag(e, rowIndex, columnIndex)}
+                    onDragStart={(e) => e.dataTransfer.setData('text/plain', rowIndex + ',' + columnIndex)}
                     onDragOver={(e) => e.preventDefault()}
-                    onDrop={handleVariableDrop}
+                    onDrop={(e) => {
+                      const [startRowIndex, startColumnIndex] = e.dataTransfer.getData('text/plain').split(',');
+                      const startIndex = parseInt(startRowIndex);
+                      const endIndex = rowIndex;
+
+                      if (startIndex === endIndex) {
+                        return;
+                      }
+
+                      handleReorderCells(startIndex, endIndex);
+                    }}
                   >
                     {cell}
                     {selectedCells.some(
                       (selectedCell) =>
                         selectedCell.row === rowIndex && selectedCell.column === columnIndex
                     ) && (
-                      <button onClick={() => handleVariableDeselect(rowIndex, columnIndex)}>
+                      <button className="remove-button" onClick={() => handleCellSelect(rowIndex, columnIndex)}>
                         X
                       </button>
                     )}
                   </td>
                 ))}
-                {/* Button to remove the entire column */}
-                <td>
-                  <button onClick={() => handleRemoveColumn(rowIndex)}>Remove Column</button>
-                </td>
               </tr>
             ))}
-            {/* Button to remove the entire row */}
             <tr>
-              <td>
-                <button onClick={() => handleRemoveRow(excelData.length - 1)}>Remove Row</button>
-              </td>
               {excelData[0]?.map((_, columnIndex) => (
-                <td key={columnIndex}></td>
+                // Button to remove the entire column
+                <td key={columnIndex}>
+                  <button className="remove-column-button" onClick={() => handleRemoveColumn(columnIndex)}>
+                    X
+                  </button>
+                </td>
               ))}
             </tr>
           </tbody>
@@ -164,28 +187,44 @@ const App = () => {
         <button onClick={handleClearSelection}>Clear Selection</button>
 
         {/* Output message textarea */}
-        <textarea
-          value={outputMessage}
-          readOnly
-          placeholder="Your output will appear here..."
-        ></textarea>
+        <textarea value={outputMessage} readOnly placeholder="Your output will appear here..."></textarea>
 
         {/* Hint for using '?' as variables */}
         <div className="hint">Hint: Use '?' as variables in your message.</div>
 
         {/* Show selected cells */}
         <div className="selected-cells">
-          {selectedCells.map((cell) => (
-            <div key={`${cell.row}-${cell.column}`} className="selected-cell">
-              {/* Uncomment the next line if you want to display both the value and its position */}
-              {/* Row {cell.row}, Column {cell.column}: {excelData[cell.row][cell.column]} */}
-              
-              {/* Display only the value of the selected cell*/}
+          {selectedCells.map((cell, index) => (
+            <div
+              key={`${cell.row}-${cell.column}`}
+              className="selected-cell"
+              draggable // Enable dragging for the variables in the preview list
+              onDragStart={(e) => e.dataTransfer.setData('text/plain', index)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                const startIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                const endIndex = index;
+                handleReorderCells(startIndex, endIndex);
+              }}
+            >
               {excelData[cell.row][cell.column]}
+              {/* Button to remove the variable */}
+              <button className="remove-variable-button" onClick={() => handleRemoveVariable(index)}>
+                X
+              </button>
             </div>
           ))}
         </div>
 
+        {/* Toast message */}
+        {toastMessage && (
+          <div className="toast">
+            <span>{toastMessage}</span>
+            <button className="close-toast-button" onClick={handleCloseToast}>
+              X
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

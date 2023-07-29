@@ -17,7 +17,7 @@ code {
 
 /* Apply a linear gradient background to the body */
 body {
-  background-image: linear-gradient(to bottom right, #8B5CF6, #9F7AEA);
+  background-image: linear-gradient(to bottom right, #87CEEB, #fff);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -25,7 +25,7 @@ body {
 }
 
 /* Apply styling to the main container for the app content */
-.App-container {
+.container {
   max-width: 600px;
   padding: 20px;
   border-radius: 10px;
@@ -47,6 +47,7 @@ table td {
 /* Highlight selected cells with a different background color */
 table td.selected {
   background-color: #FCD34D;
+  position: relative; /* Add position relative for positioning the X button */
 }
 
 /* Set styles for textareas and buttons */
@@ -55,7 +56,7 @@ button {
   width: 100%;
   margin-bottom: 10px;
   padding: 8px;
-  font-size: 1.70em; /* Set the desired font size 1.70 times bigger */
+  font-size: 1em; /* Set the desired font size */
   border: 1px solid #ddd;
   border-radius: 5px;
   outline: none;
@@ -77,12 +78,18 @@ button:hover {
   background-color: #9F7AEA;
 }
 
-/* Add styles for the sloth icon */
-.sloth-icon {
-  width: 40px; /* Set the desired width 1.70 times bigger */
-  height: 40px; /* Set the desired height 1.70 times bigger */
-  vertical-align: middle;
+/* Add styles for the sloth icon container */
+.sloth-icon-container {
+  display: flex;
+  align-items: center;
   margin-right: 10px; /* Add spacing between the icon and the title */
+}
+
+/* Add styles for the sloth icon */
+.sloth-icon-container img {
+  width: 40px; /* Set the desired width */
+  height: 40px; /* Set the desired height */
+  vertical-align: middle;
 }
 
 /* Add styles for the title */
@@ -92,9 +99,9 @@ button:hover {
   margin-bottom: 20px;
 }
 
-/* Set the font size of the title to half the default size */
+/* Set the font size of the title */
 .title {
-  font-size: 3.4em; /* Set the desired font size 1.70 times bigger */
+  font-size: 1.5em; /* Set the desired font size */
   color: #8B5CF6; /* Set the same color as the background */
   margin: 0;
 }
@@ -107,8 +114,113 @@ button:hover {
 }
 
 .selected-cell {
+  display: flex;
+  align-items: center;
   padding: 6px;
   margin: 2px;
   background-color: #FCD34D;
   border-radius: 5px;
+}
+
+/* Add styles for the "X" buttons in the variable previews */
+.selected-cell .remove-variable-button {
+  font-size: 0.8em;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Add styles for the variable previews */
+.variable-previews {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.variable-preview {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  margin: 2px;
+  background-color: #FCD34D;
+  border-radius: 5px;
+}
+
+.variable-preview .remove-variable-button {
+  font-size: 0.8em;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Toast message */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+/* Close button for toast message */
+.close-toast-button {
+  font-size: 0.8em;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* Styles for remove column and remove row buttons */
+.remove-column-button,
+.remove-row-button {
+  font-size: 0.8em;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+}
+
+.remove-column-button {
+  top: -20px;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+.remove-row-button {
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
