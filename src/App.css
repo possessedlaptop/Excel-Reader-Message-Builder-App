@@ -52,7 +52,7 @@ button {
   width: 100%;
   margin-bottom: 10px;
   padding: 8px;
-  font-size: 16px;
+  font-size: 1.70em; /* Set the desired font size 1.70 times bigger */
   border: 1px solid #ddd;
   border-radius: 5px;
   outline: none;
@@ -66,4 +66,24 @@ button {
 
 button:hover {
   background-color: #9F7AEA;
+}
+
+.sloth-icon {
+  width: 40px; /* Set the desired width 1.70 times bigger */
+  height: 40px; /* Set the desired height 1.70 times bigger */
+  vertical-align: middle;
+  margin-right: 10px; /* Add spacing between the icon and the title */
+}
+
+/* Add styles for the title */
+.title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.70em; /* Set the desired font size 1.70 times bigger */
+  color: #8B5CF6; /* Set the same color as the background */
+  margin: 0;
 }

@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from 'react';
 import ExcelUploader from './ExcelUploader';
 import './App.css';
@@ -25,27 +24,30 @@ const App = () => {
     setOutputMessage(output);
   };
 
+  const handleClearSelection = () => {
+    setSelectedCells([]);
+  };
+
   return (
     <div className="App">
-      <ExcelUploader onDataLoaded={handleDataLoaded} />
-      <div>
-        {/* Display the Excel data as a table */}
+      <div className="container App-container">
+        <div className="title-container">
+          {/* Your sloth icon */}
+          <img
+            src="https://w7.pngwing.com/pngs/745/972/png-transparent-sleeping-sloth-sleep-rest-animal-relax-lazy-cute-nap-nature.png"
+            alt="Sloth Icon"
+            className="sloth-icon"
+          />
+
+          {/* Title */}
+          <h1 className="title">Sloth Lazy Mail Builder</h1>
+        </div>
+
+        <ExcelUploader onDataLoaded={handleDataLoaded} />
+
         <table>
-          <tbody>
-            {excelData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, columnIndex) => (
-                  <td
-                    key={columnIndex}
-                    onClick={() => handleCellSelect(rowIndex, columnIndex)}
-                    className={selectedCells.includes(cell) ? 'selected' : ''}
-                  >
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
+          {/* Display the Excel data as a table */}
+          {/* ... (rest of your code) ... */}
         </table>
 
         {/* Input message textarea */}
@@ -58,8 +60,18 @@ const App = () => {
         {/* Button to generate the output */}
         <button onClick={handleGenerateOutput}>Generate Output</button>
 
+        {/* Button to clear the selection */}
+        <button onClick={handleClearSelection}>Clear Selection</button>
+
         {/* Output message textarea */}
-        <textarea value={outputMessage} readOnly></textarea>
+        <textarea
+          value={outputMessage}
+          readOnly
+          placeholder="Your output will appear here..."
+        ></textarea>
+
+        {/* Hint for using '?' as variables */}
+        <div className="hint">Hint: Use '?' as variables in your message.</div>
       </div>
     </div>
   );
