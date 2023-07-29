@@ -17,11 +17,18 @@ const App = () => {
 
   // Function to handle cell selection
   const handleCellSelect = (rowIndex, columnIndex) => {
-    const cellValue = excelData[rowIndex][columnIndex];
-    if (!selectedCells.includes(cellValue)) {
-      setSelectedCells([...selectedCells, cellValue]); // Add the selected cell value to the state
+    const isCellSelected = selectedCells.some(
+      (cell) => cell.row === rowIndex && cell.column === columnIndex
+    );
+  
+    if (isCellSelected) {
+      setSelectedCells(selectedCells.filter((cell) => !(cell.row === rowIndex && cell.column === columnIndex)));
+    } else {
+      setSelectedCells([...selectedCells, { row: rowIndex, column: columnIndex }]);
     }
   };
+  
+  
 
   // Function to generate the output message
   const handleGenerateOutput = () => {
@@ -29,11 +36,13 @@ const App = () => {
 
     // Find all occurrences of '?' in the message and replace them with selected cell values
     selectedCells.forEach((data) => {
-      output = output.replace('?', data);
+      const cellValue = excelData[data.row][data.column];
+      output = output.replace('?', cellValue);
     });
 
     setOutputMessage(output); // Update the state with the output message
   };
+
 
   // Function to clear the selected cells
   const handleClearSelection = () => {
@@ -62,19 +71,26 @@ const App = () => {
         {/* Display the Excel data as a table */}
         <table>
           <tbody>
-            {excelData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, columnIndex) => (
-                  <td
-                    key={columnIndex}
-                    onClick={() => handleCellSelect(rowIndex, columnIndex)}
-                    className={selectedCells.includes(cell) ? 'selected' : ''}
-                  >
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
+          {excelData.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, columnIndex) => (
+                <td
+                  key={columnIndex}
+                  onClick={() => handleCellSelect(rowIndex, columnIndex)}
+                  className={selectedCells.some(
+                    (selectedCell) =>
+                      selectedCell.row === rowIndex &&
+                      selectedCell.column === columnIndex
+                  )
+                    ? 'selected'
+                    : ''}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+
           </tbody>
         </table>
 
@@ -103,12 +119,17 @@ const App = () => {
 
         {/* Show selected cells */}
         <div className="selected-cells">
-          {selectedCells.map((cell, index) => (
-            <span key={index} className="selected-cell">
-              {cell}
-            </span>
+          {selectedCells.map((cell) => (
+            <div key={`${cell.row}-${cell.column}`} className="selected-cell">
+              {/* Uncomment the next line if you want to display both the value and its position */}
+              {/* Row {cell.row}, Column {cell.column}: {excelData[cell.row][cell.column]} */}
+              
+              {/* Display only the value of the selected cell*/}
+              {excelData[cell.row][cell.column]}
+            </div>
           ))}
         </div>
+
       </div>
     </div>
   );
