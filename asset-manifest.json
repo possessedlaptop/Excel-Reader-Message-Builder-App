@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Excel-Reader-Message-Builder-App/static/css/main.7d36d1f6.css",
+    "main.js": "/Excel-Reader-Message-Builder-App/static/js/main.a054fecf.js",
+    "static/js/787.780fb2ce.chunk.js": "/Excel-Reader-Message-Builder-App/static/js/787.780fb2ce.chunk.js",
+    "static/media/Sloth-icon.png": "/Excel-Reader-Message-Builder-App/static/media/Sloth-icon.c3c9bc578d3850cc1b78.png",
+    "index.html": "/Excel-Reader-Message-Builder-App/index.html",
+    "main.7d36d1f6.css.map": "/Excel-Reader-Message-Builder-App/static/css/main.7d36d1f6.css.map",
+    "main.a054fecf.js.map": "/Excel-Reader-Message-Builder-App/static/js/main.a054fecf.js.map",
+    "787.780fb2ce.chunk.js.map": "/Excel-Reader-Message-Builder-App/static/js/787.780fb2ce.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d36d1f6.css",
+    "static/js/main.a054fecf.js"
+  ]
+}
