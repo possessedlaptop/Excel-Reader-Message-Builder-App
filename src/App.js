@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
-import ExcelUploader from './ExcelUploader';
+import ExcelUploader from './components/ExcelUploader';
+import OutputMessage from './components/OutputMessage'; // Add this import
+import SelectedCells from './components/SelectedCells'; // Add this import
+import RecipientEmail from './components/RecipientEmail'; // Add this import
+import EmailSubject from './components/EmailSubject'; // Add this import
 import SlothIcon from './Sloth-icon.png'; // Import the Sloth-icon.png image from the src folder
 
 const App = () => {
@@ -196,24 +200,13 @@ const App = () => {
           Clear Selection
         </button>
 
-        {/* Output message textarea */}
-        <textarea
-          ref={outputRef}
-          value={outputMessage}
-          readOnly
-          placeholder="Your output will appear here..."
-          className="w-full p-2 border border-gray-300 rounded mt-4"
-        ></textarea>
-
-        {/* "Copy to Clipboard" button */}
-        <button
-          onClick={handleCopyToClipboard}
-          className={`${
-            copied ? 'bg-green-500' : 'bg-purple-600'
-          } text-white rounded px-4 py-2 mt-4 ml-2`}
-        >
-          {copied ? 'Copied!' : 'Copy to Clipboard'}
-        </button>
+        {/* Output message textarea and "Copy to Clipboard" button */}
+        <OutputMessage
+          outputMessage={outputMessage}
+          copied={copied}
+          handleCopyToClipboard={handleCopyToClipboard}
+          outputRef={outputRef} // Pass the outputRef as a prop
+        />
 
         {/* Hint for using '?' as variables */}
         <div className="hint text-gray-500 text-sm mt-2">
@@ -223,63 +216,25 @@ const App = () => {
         </div>
 
         {/* Show selected cells */}
-        <div className="selected-cells mt-4 flex">
-          {selectedCells.map((cell, index) => (
-            <div
-              key={`${cell.row}-${cell.column}`}
-              className="selected-cell bg-yellow-200 px-2 py-1 border border-gray-300 rounded flex items-center mr-2 mb-2"
-              draggable // Enable dragging for the variables in the preview list
-              onDragStart={(e) => e.dataTransfer.setData('text/plain', index)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                const startIndex = parseInt(e.dataTransfer.getData('text/plain'));
-                const endIndex = index;
-                handleReorderCells(startIndex, endIndex);
-              }}
-            >
-              {excelData[cell.row][cell.column]}
-              {/* Button to remove the variable */}
-              <button
-                onClick={() => handleRemoveVariable(index)}
-                className="remove-variable-button ml-2 bg-red-500 text-white rounded px-1 py-1"
-              >
-                X
-              </button>
-            </div>
-          ))}
-        </div>
+        <SelectedCells
+          selectedCells={selectedCells}
+          excelData={excelData}
+          handleRemoveVariable={handleRemoveVariable}
+          handleReorderCells={handleReorderCells}
+        />
 
-                {/* Recipient's email input */}
-                <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Recipient's Email</label>
-          <div className="mt-1 flex rounded-md shadow-sm">
-            <input
-              type="text"
-              value={recipientEmail}
-              onChange={(e) => setRecipientEmail(e.target.value)}
-              className="flex-1 block w-full min-w-0 border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md sm:text-sm"
-            />
-          </div>
-        </div>
+        {/* Recipient's email input */}
+        <RecipientEmail
+          recipientEmail={recipientEmail}
+          setRecipientEmail={setRecipientEmail}
+        />
 
         {/* Email subject input */}
-        <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Email Subject</label>
-          <input
-            type="text"
-            value={emailSubject}
-            onChange={(e) => setEmailSubject(e.target.value)}
-            className="mt-1 block w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md sm:text-sm"
-          />
-        </div>
-
-        {/* Button to generate "mailto" link */}
-        <a
-          href={generateMailToLink()}
-          className="bg-blue-600 text-white rounded px-4 py-2 mt-4 ml-2 inline-block"
-        >
-          Send Email
-        </a>
+        <EmailSubject
+          emailSubject={emailSubject}
+          setEmailSubject={setEmailSubject}
+          generateMailToLink={generateMailToLink}
+        />
 
       </div>
     </div>
