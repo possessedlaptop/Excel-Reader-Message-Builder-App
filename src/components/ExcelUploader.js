@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 
 const ExcelUploader = ({ onDataLoaded }) => {
   // State to hold the selected file, !DONT CHANGE THE FILE CONST OR IT WONT HOLD IT CORRECTLY
+  // eslint-disable-next-line no-unused-vars
   const [file, setFile] = useState(null);
 
   // Function to handle file selection change

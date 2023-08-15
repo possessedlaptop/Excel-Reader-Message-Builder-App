@@ -127,6 +127,7 @@ const App = () => {
         {/* Excel file uploader */}
         <ExcelUploader onDataLoaded={handleDataLoaded} />
 
+        {/* TODO: while importing as component, functionality breaks, needs debegging to fix */}
         {/* Margin between the table and the uploader */}
         <div className="mt-6">
           {/* Display the Excel data as a table */}
