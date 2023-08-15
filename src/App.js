@@ -9,6 +9,8 @@ const App = () => {
   const [message, setMessage] = useState(''); // Holds the user input message
   const [outputMessage, setOutputMessage] = useState(''); // Holds the output message with replaced values
   const [copied, setCopied] = useState(false);
+  const [recipientEmail, setRecipientEmail] = useState(''); // Holds the recipient email
+  const [emailSubject, setEmailSubject] = useState(''); // Holds the email subject
 
 
   // Function to handle data loaded from Excel file
@@ -98,6 +100,11 @@ const App = () => {
         setCopied(false);
       }, 1000); // Reset "Copied!" message after 1 second
     }
+  };
+
+  const generateMailToLink = () => {
+    const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(outputMessage)}`;
+    return mailtoLink;
   };
 
   return (
@@ -241,6 +248,39 @@ const App = () => {
             </div>
           ))}
         </div>
+
+                {/* Recipient's email input */}
+                <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700">Recipient's Email</label>
+          <div className="mt-1 flex rounded-md shadow-sm">
+            <input
+              type="text"
+              value={recipientEmail}
+              onChange={(e) => setRecipientEmail(e.target.value)}
+              className="flex-1 block w-full min-w-0 border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md sm:text-sm"
+            />
+          </div>
+        </div>
+
+        {/* Email subject input */}
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700">Email Subject</label>
+          <input
+            type="text"
+            value={emailSubject}
+            onChange={(e) => setEmailSubject(e.target.value)}
+            className="mt-1 block w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md sm:text-sm"
+          />
+        </div>
+
+        {/* Button to generate "mailto" link */}
+        <a
+          href={generateMailToLink()}
+          className="bg-blue-600 text-white rounded px-4 py-2 mt-4 ml-2 inline-block"
+        >
+          Send Email
+        </a>
+
       </div>
     </div>
   );
