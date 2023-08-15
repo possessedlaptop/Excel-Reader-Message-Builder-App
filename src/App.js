@@ -152,7 +152,7 @@ const App = () => {
                       onDragStart={(e) => e.dataTransfer.setData('text/plain', rowIndex + ',' + columnIndex)}
                       onDragOver={(e) => e.preventDefault()}
                       onDrop={(e) => {
-                        const [startRowIndex, startColumnIndex] = e.dataTransfer.getData('text/plain').split(',');
+                        const [startRowIndex] = e.dataTransfer.getData('text/plain').split(',');
                         const startIndex = parseInt(startRowIndex);
                         const endIndex = rowIndex;
 
