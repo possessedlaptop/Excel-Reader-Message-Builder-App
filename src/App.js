@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ExcelUploader from './ExcelUploader';
 import SlothIcon from './Sloth-icon.png'; // Import the Sloth-icon.png image from the src folder
 
@@ -8,6 +8,8 @@ const App = () => {
   const [selectedCells, setSelectedCells] = useState([]); // Holds the selected cell values
   const [message, setMessage] = useState(''); // Holds the user input message
   const [outputMessage, setOutputMessage] = useState(''); // Holds the output message with replaced values
+  const [copied, setCopied] = useState(false);
+
 
   // Function to handle data loaded from Excel file
   const handleDataLoaded = (data) => {
@@ -80,6 +82,21 @@ const App = () => {
       setExcelData((prevData) => prevData.filter((_, index) => index !== rowIndex));
     } else {
       alert("Cannot delete a row with selected cells. Clear the selection first.");
+    }
+  };
+
+  const outputRef = useRef(null);
+
+  // Function to handle copying to clipboard
+  const handleCopyToClipboard = () => {
+    if (outputMessage) {
+      outputRef.current.select();
+      document.execCommand('copy');
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000); // Reset "Copied!" message after 1 second
     }
   };
 
@@ -174,11 +191,22 @@ const App = () => {
 
         {/* Output message textarea */}
         <textarea
+          ref={outputRef}
           value={outputMessage}
           readOnly
           placeholder="Your output will appear here..."
           className="w-full p-2 border border-gray-300 rounded mt-4"
         ></textarea>
+
+        {/* "Copy to Clipboard" button */}
+        <button
+          onClick={handleCopyToClipboard}
+          className={`${
+            copied ? 'bg-green-500' : 'bg-purple-600'
+          } text-white rounded px-4 py-2 mt-4 ml-2`}
+        >
+          {copied ? 'Copied!' : 'Copy to Clipboard'}
+        </button>
 
         {/* Hint for using '?' as variables */}
         <div className="hint text-gray-500 text-sm mt-2">
