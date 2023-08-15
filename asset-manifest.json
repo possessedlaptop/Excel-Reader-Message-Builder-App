@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Excel-Reader-Message-Builder-App/static/css/main.fbd6b979.css",
-    "main.js": "/Excel-Reader-Message-Builder-App/static/js/main.35339953.js",
+    "main.css": "/Excel-Reader-Message-Builder-App/static/css/main.10f1143c.css",
+    "main.js": "/Excel-Reader-Message-Builder-App/static/js/main.4bf0133d.js",
     "static/js/787.780fb2ce.chunk.js": "/Excel-Reader-Message-Builder-App/static/js/787.780fb2ce.chunk.js",
     "static/media/Sloth-icon.png": "/Excel-Reader-Message-Builder-App/static/media/Sloth-icon.c3c9bc578d3850cc1b78.png",
     "index.html": "/Excel-Reader-Message-Builder-App/index.html",
-    "main.fbd6b979.css.map": "/Excel-Reader-Message-Builder-App/static/css/main.fbd6b979.css.map",
-    "main.35339953.js.map": "/Excel-Reader-Message-Builder-App/static/js/main.35339953.js.map",
+    "main.10f1143c.css.map": "/Excel-Reader-Message-Builder-App/static/css/main.10f1143c.css.map",
+    "main.4bf0133d.js.map": "/Excel-Reader-Message-Builder-App/static/js/main.4bf0133d.js.map",
     "787.780fb2ce.chunk.js.map": "/Excel-Reader-Message-Builder-App/static/js/787.780fb2ce.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fbd6b979.css",
-    "static/js/main.35339953.js"
+    "static/css/main.10f1143c.css",
+    "static/js/main.4bf0133d.js"
   ]
 }
